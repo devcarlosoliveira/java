@@ -7,7 +7,7 @@
     "editor.tabSize": 2,
     "editor.rulers": [80, 120],
     "editor.minimap.enabled": false,
-    "workbench.activityBar.location": "top",
+    "workbench.activityBar.location": "side",
     "java.compile.nullAnalysis.mode": "automatic",
     "files.associations": {
         "*.java": "java",
