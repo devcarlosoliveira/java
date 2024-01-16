@@ -48,5 +48,6 @@
     "azure-pipelines.customSchemaFile": ".vscode/dnceng-schema.json",
     "dotnet.defaultSolution": "Roslyn.sln",
     "dotnet.completion.showCompletionItemsFromUnimportedNamespaces": true,
-    "java.project.sourcePaths": []
+    "java.project.sourcePaths": [],
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
