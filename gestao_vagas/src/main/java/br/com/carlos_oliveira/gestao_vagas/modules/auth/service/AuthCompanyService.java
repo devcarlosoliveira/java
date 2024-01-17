@@ -3,8 +3,12 @@ package br.com.carlos_oliveira.gestao_vagas.modules.auth.service;
 import javax.security.sasl.AuthenticationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 
 import br.com.carlos_oliveira.gestao_vagas.exceptions.UsernameNotFoundException;
 import br.com.carlos_oliveira.gestao_vagas.modules.auth.dto.AuthCompanyDTO;
@@ -14,28 +18,39 @@ import br.com.carlos_oliveira.gestao_vagas.modules.company.repository.CompanyRep
 @Service
 public class AuthCompanyService {
 
-	@Autowired
-	CompanyRepository companyRepository;
+	@Value("${security.token.secret}")
+	private String secretKey;
 
 	@Autowired
-	PasswordEncoder passwordEncoder;
+	private CompanyRepository companyRepository;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	/**
 	 * @param authCompanyDTO
+	 * @return
 	 * @throws AuthenticationException
 	 */
-	public void authentication(AuthCompanyDTO authCompanyDTO) throws AuthenticationException {
+	public String authentication(AuthCompanyDTO authCompanyDTO) throws AuthenticationException {
 
-		var company = companyRepository.findByUsername(authCompanyDTO.getUsername()).orElseThrow(
+		CompanyEntity companyEntity = companyRepository.findByUsername(authCompanyDTO.getUsername()).orElseThrow(
 				() -> {
-					throw new UsernameNotFoundException();
+					throw new UsernameNotFoundException("Username or Password incorrect");
 				});
 
-		var passwordMatches = passwordEncoder.matches(authCompanyDTO.getPassword(), company.getPassword());
+		var passwordMatches = passwordEncoder.matches(authCompanyDTO.getPassword(), companyEntity.getPassword());
 
 		if (!passwordMatches) {
-			throw new AuthenticationException();
+			throw new AuthenticationException("Username or Password incorrect");
 		}
-	}
 
+		var algorithm = Algorithm.HMAC256(secretKey);
+
+		var token = JWT.create().withIssuer("javavagas")
+				.withSubject(companyEntity.getId().toString())
+				.sign(algorithm);
+
+		return token;
+	}
 }
