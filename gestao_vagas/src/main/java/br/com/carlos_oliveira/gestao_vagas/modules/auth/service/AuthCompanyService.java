@@ -1,5 +1,8 @@
 package br.com.carlos_oliveira.gestao_vagas.modules.auth.service;
 
+import java.time.Duration;
+import java.time.Instant;
+
 import javax.security.sasl.AuthenticationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +51,7 @@ public class AuthCompanyService {
 		var algorithm = Algorithm.HMAC256(secretKey);
 
 		var token = JWT.create().withIssuer("javavagas")
+				.withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
 				.withSubject(companyEntity.getId().toString())
 				.sign(algorithm);
 
