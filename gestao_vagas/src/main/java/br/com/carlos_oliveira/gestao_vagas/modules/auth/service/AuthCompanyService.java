@@ -42,7 +42,7 @@ public class AuthCompanyService {
 					throw new UsernameNotFoundException("Username or Password incorrect");
 				});
 
-		var passwordMatches = passwordEncoder.matches(authCompanyDTO.getPassword(), companyEntity.getPassword());
+		boolean passwordMatches = passwordEncoder.matches(authCompanyDTO.getPassword(), companyEntity.getPassword());
 
 		if (!passwordMatches) {
 			throw new AuthenticationException("Username or Password incorrect");

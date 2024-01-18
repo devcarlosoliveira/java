@@ -9,6 +9,7 @@
     "editor.minimap.enabled": false,
     "workbench.activityBar.location": "side",
     "java.compile.nullAnalysis.mode": "automatic",
+    "java.saveActions.organizeImports": true,
     "files.associations": {
         "*.java": "java",
         "*.jsp": "java",
