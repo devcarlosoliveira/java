@@ -9,18 +9,21 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import br.com.carlos_oliveira.gestao_vagas.providers.JWTProvider;
+import br.com.carlos_oliveira.gestao_vagas.providers.JWTCandidateProvider;
 import br.com.carlos_oliveira.gestao_vagas.util.Constants;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * SecurityCandidateFilter
+ */
 @Component
-public class SecurityFilter extends OncePerRequestFilter {
+public class SecurityCandidateFilter extends OncePerRequestFilter {
 
 	@Autowired
-	private JWTProvider jwtProvider;
+	private JWTCandidateProvider jwtCandidateProvider;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -28,15 +31,18 @@ public class SecurityFilter extends OncePerRequestFilter {
 
 		var header = request.getHeader(Constants.HEADER_AUTHORIZATION);
 
-		if (request.getRequestURI().startsWith(Constants.URI_COMPANY)) {
+		if (request.getRequestURI().startsWith(Constants.URI_CANDIDATE)) {
+
 			if (header != null) {
-				var tokenDecoded = jwtProvider.validateToken(header);
+
+				var tokenDecoded = jwtCandidateProvider.validateToken(header);
+
 				if (tokenDecoded == null) {
 					response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 					return;
 				}
 
-				request.setAttribute(Constants.COMPANY_ID, tokenDecoded.getSubject());
+				request.setAttribute(Constants.CANDIDATE_ID, tokenDecoded.getSubject());
 
 				var roles = tokenDecoded.getClaim(Constants.ROLES).asList(Object.class);
 
@@ -53,5 +59,4 @@ public class SecurityFilter extends OncePerRequestFilter {
 
 		filterChain.doFilter(request, response);
 	}
-
 }

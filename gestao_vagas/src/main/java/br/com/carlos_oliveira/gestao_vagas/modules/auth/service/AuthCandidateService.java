@@ -58,7 +58,7 @@ public class AuthCandidateService {
 				.withIssuer("javavagas")
 				.withExpiresAt(expiresIn)
 				.withSubject(candidateEntity.getId().toString())
-				.withClaim("roles", Arrays.asList("candidate"))
+				.withClaim("roles", Arrays.asList("CANDIDATE"))
 				.sign(algorithm);
 
 		var authCandidateResponse = AuthCandidateResponseDTO.builder()

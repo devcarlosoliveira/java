@@ -11,9 +11,9 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import br.com.carlos_oliveira.gestao_vagas.util.Constants;
 
 @Service
-public class JWTProvider {
+public class JWTCandidateProvider {
 
-	@Value("${security.token.secret}")
+	@Value("${security.token.secret.candidate}")
 	private String secretKey;
 
 	public DecodedJWT validateToken(String token) {
