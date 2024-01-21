@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.carlos_oliveira.gestao_vagas.exceptions.UsernameNotFoundException;
 import br.com.carlos_oliveira.gestao_vagas.modules.company.model.JobEntity;
 import br.com.carlos_oliveira.gestao_vagas.modules.company.repository.JobRepository;
 

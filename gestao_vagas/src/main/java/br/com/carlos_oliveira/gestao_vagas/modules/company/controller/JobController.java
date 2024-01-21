@@ -14,7 +14,6 @@ import br.com.carlos_oliveira.gestao_vagas.modules.company.dto.CreateJobDTO;
 import br.com.carlos_oliveira.gestao_vagas.modules.company.model.JobEntity;
 import br.com.carlos_oliveira.gestao_vagas.modules.company.service.JobService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
