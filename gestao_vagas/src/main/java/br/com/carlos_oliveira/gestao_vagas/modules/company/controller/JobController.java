@@ -27,48 +27,48 @@ import jakarta.validation.Valid;
 @RequestMapping("/company/job")
 public class JobController {
 
-	@Autowired
-	private JobService jobService;
+    @Autowired
+    private JobService jobService;
 
-	@PostMapping("/")
-	@PreAuthorize("hasRole('COMPANY')")
-	@Tag(name = "Vagas", description = "Listagem de vagas disponíveis para o candidato")
-	@Operation(summary = "Cadastro de vagas",
+    @PostMapping("/")
+    @PreAuthorize("hasRole('COMPANY')")
+    @Tag(name = "Vagas", description = "Listagem de vagas disponíveis para o candidato")
+    @Operation(summary = "Cadastro de vagas",
 
-			description = "Essa função é responsável por cadastrar as vagas dentro da empresa"
+            description = "Essa função é responsável por cadastrar as vagas dentro da empresa"
 
-	)
-	@ApiResponses({
-			@ApiResponse(responseCode = "200", content = {
-					@Content(schema = @Schema(implementation = JobEntity.class))
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", content = {
+                    @Content(schema = @Schema(implementation = JobEntity.class))
 
-			})
-	})
-	@SecurityRequirement(name = "jwt_auth")
-	public ResponseEntity<Object> create(@Valid @RequestBody CreateJobDTO createJobDTO, HttpServletRequest request) {
+            })
+    })
+    @SecurityRequirement(name = "jwt_auth")
+    public ResponseEntity<Object> create(@Valid @RequestBody CreateJobDTO createJobDTO, HttpServletRequest request) {
 
-		try {
+        try {
 
-			var companyId = request.getAttribute("company_id");
+            var companyId = request.getAttribute("company_id");
 
-			var jobEntity = JobEntity.builder()
-					.companyId(UUID.fromString(companyId.toString()))
-					.benefits(createJobDTO.getBenefits())
-					.description(createJobDTO.getDescription())
-					.level(createJobDTO.getLevel())
-					.build();
+            var jobEntity = JobEntity.builder()
+                    .companyId(UUID.fromString(companyId.toString()))
+                    .benefits(createJobDTO.getBenefits())
+                    .description(createJobDTO.getDescription())
+                    .level(createJobDTO.getLevel())
+                    .build();
 
-			var savedEntity = jobService.create(jobEntity);
+            var savedEntity = jobService.create(jobEntity);
 
-			return ResponseEntity.ok().body(savedEntity);
-			// return ResponseEntity.status(HttpStatus.CREATED).body(savedEntity);
+            return ResponseEntity.ok().body(savedEntity);
+            // return ResponseEntity.status(HttpStatus.CREATED).body(savedEntity);
 
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-			// return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+            // return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 
-		}
+        }
 
-	}
+    }
 
 }

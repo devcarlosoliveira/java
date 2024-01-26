@@ -23,48 +23,49 @@ import br.com.carlos_oliveira.gestao_vagas.modules.company.repository.CompanyRep
 @Service
 public class AuthCompanyService {
 
-	@Value("${security.token.secret}")
-	private String secretKey;
+    @Value("${security.token.secret}")
+    private String secretKey;
 
-	@Autowired
-	private CompanyRepository companyRepository;
+    @Autowired
+    private CompanyRepository companyRepository;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-	/**
-	 * @param authCompanyDTO
-	 * @return
-	 * @throws AuthenticationException
-	 */
-	public AuthCompanyResponseDTO authentication(AuthCompanyDTO authCompanyDTO) throws AuthenticationException {
+    /**
+     * @param authCompanyDTO
+     * @return
+     * @throws AuthenticationException
+     */
+    public AuthCompanyResponseDTO authentication(AuthCompanyDTO authCompanyDTO) throws AuthenticationException {
 
-		CompanyEntity companyEntity = companyRepository.findByUsername(authCompanyDTO.getUsername()).orElseThrow(
-				() -> {
-					throw new UsernameNotFoundException("Username or Password incorrect");
-				});
+        CompanyEntity companyEntity = companyRepository.findByUsername(authCompanyDTO.getUsername()).orElseThrow(
+                () -> {
+                    throw new UsernameNotFoundException("Username or Password incorrect");
+                });
 
-		boolean passwordMatches = passwordEncoder.matches(authCompanyDTO.getPassword(), companyEntity.getPassword());
+        boolean passwordMatches = passwordEncoder.matches(authCompanyDTO.getPassword(), companyEntity.getPassword());
 
-		if (!passwordMatches) {
-			throw new AuthenticationException("Username or Password incorrect");
-		}
+        if (!passwordMatches) {
+            throw new AuthenticationException("Username or Password incorrect");
+        }
 
-		var algorithm = Algorithm.HMAC256(secretKey);
-		var expiresIn = Instant.now().plus(Duration.ofHours(2));
+        var algorithm = Algorithm.HMAC256(secretKey);
+        var expiresIn = Instant.now().plus(Duration.ofHours(2));
 
-		var token = JWT.create().withIssuer("javavagas")
-				.withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
-				.withSubject(companyEntity.getId().toString())
-				.withClaim("roles", Arrays.asList("COMPANY"))
-				.sign(algorithm);
+        var token = JWT.create()
+                .withIssuer("javavagas")
+                .withExpiresAt(expiresIn)
+                .withSubject(companyEntity.getId().toString())
+                .withClaim("roles", Arrays.asList("COMPANY"))
+                .sign(algorithm);
 
-		var authCompanyResponse = AuthCompanyResponseDTO.builder()
-				.access_token(token)
-				.expires_in(expiresIn.toEpochMilli())
-				.build();
+        var authCompanyResponse = AuthCompanyResponseDTO.builder()
+                .access_token(token)
+                .expires_in(expiresIn.toEpochMilli())
+                .build();
 
-		return authCompanyResponse;
+        return authCompanyResponse;
 
-	}
+    }
 }

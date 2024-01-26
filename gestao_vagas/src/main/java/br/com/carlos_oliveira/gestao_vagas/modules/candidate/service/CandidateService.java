@@ -3,6 +3,7 @@ package br.com.carlos_oliveira.gestao_vagas.modules.candidate.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.carlos_oliveira.gestao_vagas.exceptions.UserFoundException;
 import br.com.carlos_oliveira.gestao_vagas.modules.candidate.model.CandidateEntity;
@@ -17,6 +18,7 @@ public class CandidateService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	@Transactional
 	public CandidateEntity create(CandidateEntity candidateEntity) {
 		candidateRepository
 				.findByUsernameOrEmail(candidateEntity.getUsername(), candidateEntity.getEmail())
@@ -30,4 +32,5 @@ public class CandidateService {
 		return candidateRepository.save(candidateEntity);
 
 	}
+
 }

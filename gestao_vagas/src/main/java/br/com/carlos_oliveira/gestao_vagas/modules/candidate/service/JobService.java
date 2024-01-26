@@ -19,5 +19,4 @@ public class JobService {
 		return jobRepository.findAllByDescriptionContainingIgnoreCase(filter);
 
 	}
-
 }

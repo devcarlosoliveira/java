@@ -10,7 +10,7 @@ indent_style = space
 spelling_exclusion_path = SpellingExclusions.dic
 
 [*.{groovy,java,kt,xml}]
-indent_style = tab
+indent_style = space
 indent_size = 4
 continuation_indent_size = 8
 

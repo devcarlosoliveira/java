@@ -1,26 +1,32 @@
 package br.com.carlos_oliveira.gestao_vagas.modules.company.service;
 
-import java.util.Objects;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.carlos_oliveira.gestao_vagas.exceptions.CompanyNotFoundException;
 import br.com.carlos_oliveira.gestao_vagas.modules.company.model.JobEntity;
+import br.com.carlos_oliveira.gestao_vagas.modules.company.repository.CompanyRepository;
 import br.com.carlos_oliveira.gestao_vagas.modules.company.repository.JobRepository;
 
 @Service
 public class JobService {
 
-	@Autowired
-	private JobRepository jobRepository;
+    @Autowired
+    private JobRepository jobRepository;
 
-	@Transactional
-	public JobEntity create(JobEntity jobEntity) {
+    @Autowired
+    private CompanyRepository companyRepository;
 
-		Objects.requireNonNull(jobEntity, "A entidade não pode ser nula");
+    @Transactional
+    public JobEntity create(JobEntity jobEntity) {
 
-		return jobRepository.save(jobEntity);
+        companyRepository.findById(jobEntity.getId())
+                .orElseThrow(() -> {
+                    throw new CompanyNotFoundException();
+                });
 
-	}
+        return jobRepository.save(jobEntity);
+
+    }
 }

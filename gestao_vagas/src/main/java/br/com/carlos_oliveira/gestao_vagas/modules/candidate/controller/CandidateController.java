@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.carlos_oliveira.gestao_vagas.modules.auth.dto.ProfileCandidateResponseDTO;
 import br.com.carlos_oliveira.gestao_vagas.modules.auth.service.ProfileCandidateService;
+import br.com.carlos_oliveira.gestao_vagas.modules.candidate.model.ApplyJobEntity;
 import br.com.carlos_oliveira.gestao_vagas.modules.candidate.model.CandidateEntity;
+import br.com.carlos_oliveira.gestao_vagas.modules.candidate.service.ApplyJobService;
 import br.com.carlos_oliveira.gestao_vagas.modules.candidate.service.CandidateService;
 import br.com.carlos_oliveira.gestao_vagas.modules.candidate.service.JobService;
 import br.com.carlos_oliveira.gestao_vagas.modules.company.model.JobEntity;
@@ -43,6 +45,9 @@ public class CandidateController {
 
 	@Autowired
 	private JobService jobService;
+
+	@Autowired
+	private ApplyJobService applyJobService;
 
 	@Operation(summary = "Cadastro do candidato",
 
@@ -117,4 +122,33 @@ public class CandidateController {
 	public ResponseEntity<Object> findAllJob(@RequestParam String filter) {
 		return ResponseEntity.ok().body(jobService.listAllJobs(filter));
 	}
+
+	@PostMapping("/job/apply")
+	@PreAuthorize("hasRole('CANDIDATE')")
+	@Operation(summary = "Inscrição do candidato para uma vaga",
+
+			description = "Essa função é responsável por realizar a inscrição do candidato em uma vaga."
+
+	)
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", content = {
+					@Content(schema = @Schema(implementation = ApplyJobEntity.class))
+
+			})
+	})
+	@SecurityRequirement(name = "jwt_auth")
+	public ResponseEntity<Object> applyJob(HttpServletRequest request, @RequestBody UUID jobId) {
+
+		var candidateId = request.getAttribute(Constants.CANDIDATE_ID);
+
+		try {
+			var applyJobEntity = applyJobService.create(UUID.fromString(candidateId.toString()), jobId);
+
+			return ResponseEntity.ok().body(applyJobEntity);
+
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
 }

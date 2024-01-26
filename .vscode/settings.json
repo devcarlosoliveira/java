@@ -8,8 +8,6 @@
     "editor.rulers": [80, 120],
     "editor.minimap.enabled": false,
     "workbench.activityBar.location": "side",
-    "java.compile.nullAnalysis.mode": "automatic",
-    "java.saveActions.organizeImports": true,
     "files.associations": {
         "*.java": "java",
         "*.jsp": "java",
@@ -49,6 +47,9 @@
     "azure-pipelines.customSchemaFile": ".vscode/dnceng-schema.json",
     "dotnet.defaultSolution": "Roslyn.sln",
     "dotnet.completion.showCompletionItemsFromUnimportedNamespaces": true,
+    // java settings
     "java.project.sourcePaths": [],
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.configuration.updateBuildConfiguration": "automatic", // "interactive"
+    "java.saveActions.organizeImports": true
 }
