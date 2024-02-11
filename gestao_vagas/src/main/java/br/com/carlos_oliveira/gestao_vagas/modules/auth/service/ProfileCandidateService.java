@@ -11,28 +11,28 @@ import br.com.carlos_oliveira.gestao_vagas.modules.candidate.repository.Candidat
 
 public class ProfileCandidateService {
 
-	@Autowired
-	private CandidateRepository candidateRepository;
+    @Autowired
+    private CandidateRepository candidateRepository;
 
-	public ProfileCandidateResponseDTO getProfileCandidate(UUID candidateId) {
+    public ProfileCandidateResponseDTO getProfileCandidate(UUID candidateId) {
 
-		if (candidateId == null) {
-			throw new NullPointerException("FieldError must not be null");
-		}
+        if (candidateId == null) {
+            throw new NullPointerException("FieldError must not be null");
+        }
 
-		CandidateEntity candidateEntity = candidateRepository.findById(candidateId)
-				.orElseThrow(() -> {
-					throw new UsernameNotFoundException("Username or Password incorrect");
-				});
+        CandidateEntity candidateEntity = candidateRepository.findById(candidateId)
+                .orElseThrow(() -> {
+                    throw new UsernameNotFoundException();
+                });
 
-		var profileCandidateResponseDTO = ProfileCandidateResponseDTO.builder()
-				.id(candidateEntity.getId())
-				.name(candidateEntity.getName())
-				.description(candidateEntity.getDescription())
-				.username(candidateEntity.getUsername())
-				.email(candidateEntity.getEmail())
-				.build();
+        var profileCandidateResponseDTO = ProfileCandidateResponseDTO.builder()
+                .id(candidateEntity.getId())
+                .name(candidateEntity.getName())
+                .description(candidateEntity.getDescription())
+                .username(candidateEntity.getUsername())
+                .email(candidateEntity.getEmail())
+                .build();
 
-		return profileCandidateResponseDTO;
-	}
+        return profileCandidateResponseDTO;
+    }
 }

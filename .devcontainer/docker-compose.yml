@@ -1,37 +1,36 @@
 version: '3.8'
 
-volumes:
-  postgres-data:
-
 services:
   app:
     container_name: javadev
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
     environment:
       # NOTE: POSTGRES_DB/USER/PASSWORD should match values in db container
-        POSTGRES_PASSWORD: postgres
-        POSTGRES_USER: postgres
-        POSTGRES_DB: postgres
-        POSTGRES_HOSTNAME: postgresdb
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_HOSTNAME: postgresdb
 
     volumes:
       - ../..:/workspaces:cached
-      
+
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
 
     # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
     network_mode: service:db
 
-    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally. 
+    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
 
   db:
     container_name: postgresdb
     image: postgres:latest
     restart: unless-stopped
+    ports:
+      - '5432:5432'
     volumes:
       - postgres-data:/var/lib/postgresql/data
     environment:
@@ -42,3 +41,22 @@ services:
 
     # Add "forwardPorts": ["5432"] to **devcontainer.json** to forward PostgreSQL locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
+
+  sonarqube:
+    container_name: sonarqube
+    image: sonarqube:community
+    hostname: sonarqube
+    ports:
+      - '9000:9000'
+    environment:
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: true
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+
+volumes:
+  postgres-data:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:

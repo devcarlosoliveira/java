@@ -1,7 +1,6 @@
 {
 	// See https://go.microsoft.com/fwlink/?LinkId=827846 to learn about workspace recommendations.
 	// Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
-
 	// List of extensions which should be recommended for users of this workspace.
 	"recommendations": [
 		// We recommend this extension for contributors to assist with the correct styling and formatting of files in this repo.
@@ -15,10 +14,11 @@
 		"mads-hartmann.bash-ide-vscode",
 		"mutantdino.resourcemonitor",
 		"bierner.github-markdown-preview",
-		"chrisdias.vscode-opennewinstance"
+		"chrisdias.vscode-opennewinstance",
+		"miguelsolorio.min-theme",
+		"miguelsolorio.symbols",
+		"miguelsolorio.fluent-icons"
 	],
 	// List of extensions recommended by VS Code that should not be recommended for users of this workspace.
-	"unwantedRecommendations": [
-		
-	]
+	"unwantedRecommendations": []
 }

@@ -1,10 +1,10 @@
-package br.com.carlos_oliveira.gestao_vagas;
+package br.com.carlosoliveira.desafio01;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class GestaoVagasApplicationTests {
+class Desafio01ApplicationTests {
 
 	@Test
 	void contextLoads() {
